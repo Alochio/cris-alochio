@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Cris Alochio | Treino Personalizado</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
 
   <style>
     :root {
@@ -362,8 +363,76 @@
 
     .exercise-grid {
       display: grid;
-      grid-template-columns: 2fr repeat(4, 1fr);
+      grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr));
       gap: 12px;
+    }
+
+    .exercise-grid.conjugated {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .exercise-names {
+      min-width: 0;
+    }
+
+    .conjugated .exercise-names {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .exercise-name-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .exercise-name-row label {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .remove-conjugate {
+      flex: 0 0 36px;
+      min-height: 43px;
+      padding: 4px;
+      border: 1px solid #e3e3e3;
+      border-radius: 7px;
+      background: white;
+      color: #a34b35;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .conjugate-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      grid-column: 1 / -1;
+      justify-self: start;
+      min-height: 40px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      border: 1px solid #f2c8aa;
+      border-radius: 7px;
+      background: white;
+      color: var(--orange-dark);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .conjugated .conjugate-button {
+      margin-top: 0;
+    }
+
+    .sequence-note {
+      margin: 0 0 16px;
+      color: #806d61;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .exercise-grid input {
@@ -438,6 +507,18 @@
       font-size: 12px;
     }
 
+    .summary-sequence {
+      margin: 10px 0;
+      padding-left: 22px;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-row .sequence-note {
+      margin: 8px 0;
+    }
+
     .pdf-preview {
       margin-top: 25px;
       padding-top: 24px;
@@ -489,12 +570,17 @@
         grid-template-columns: 1fr;
       }
 
-      .exercise-grid {
+      .exercise-grid,
+      .exercise-grid.conjugated {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .exercise-grid label:first-child {
+      .exercise-grid > .exercise-names {
         grid-column: 1 / -1;
+      }
+
+      .conjugated .exercise-names {
+        grid-template-columns: 1fr;
       }
 
       .actions .button {
@@ -608,7 +694,7 @@
           <div class="section-number">02</div>
           <div>
             <h2>Montar os treinos</h2>
-            <p>Selecione cada dia e adicione os exercícios correspondentes.</p>
+            <p>Selecione cada dia e adicione os exercícios. Use “Conjugar exercício” para montar uma sequência.</p>
           </div>
         </div>
 
@@ -701,11 +787,16 @@
 
     const empty = () => ({
       exercicio: '',
+      conjugados: [],
       series: '',
       repeticoes: '',
       intervalo: '',
       metodo: ''
     });
+
+    const exerciseNames = (row) => [row.exercicio, ...(row.conjugados || [])];
+    const isConjugated = (row) => Boolean(row.conjugados?.length);
+    const sequenceNote = 'Faça os exercícios na ordem, sem pausa entre eles. A sequência completa vale 1 repetição. O intervalo é após a série.';
 
     const state = {
       total: 1,
@@ -781,35 +872,63 @@
     function drawRows() {
       $('rows').innerHTML = state.treinos[state.ativo]
         .map((row, index) => {
-          const input = (field, label, placeholder, max) => {
+          const conjugated = isConjugated(row);
+          const title = (conjugated ? 'Conjugado ' : 'Exercício ') + (index + 1);
+          const input = (field, label, placeholder, max, conjugate = null) => {
+            const value = conjugate === null ? row[field] : row.conjugados[conjugate];
+
             return (
               '<label>' + label +
               '<input type="text"' +
               ' data-index="' + index + '"' +
               ' data-field="' + field + '"' +
+              (conjugate === null ? '' : ' data-conjugate="' + conjugate + '"') +
               ' maxlength="' + max + '"' +
               ' placeholder="' + placeholder + '"' +
-              ' value="' + escapeHtml(row[field]) + '">' +
+              ' value="' + escapeHtml(value) + '">' +
               '</label>'
             );
           };
 
+          const names = exerciseNames(row).map((name, part) => (
+            '<div class="exercise-name-row">' +
+              input(
+                part === 0 ? 'exercicio' : 'conjugado',
+                conjugated ? (part + 1) + '. Exercício' : 'Exercício',
+                part === 0 ? 'Ex.: Supino reto' : 'Próximo exercício da sequência',
+                100,
+                part === 0 ? null : part - 1
+              ) +
+              (conjugated
+                ? '<button type="button" class="remove-conjugate"' +
+                  ' data-remove-conjugate="' + index + '" data-part="' + part + '"' +
+                  ' aria-label="Remover exercício ' + (part + 1) + ' do conjugado ' + (index + 1) + '">' +
+                  '&times;</button>'
+                : '') +
+            '</div>'
+          )).join('');
+
           return (
-            '<div class="exercise">' +
+            '<div class="exercise" role="group" aria-label="' + title + '">' +
               '<div class="exercise-top">' +
-                '<strong>Exercício ' + (index + 1) + '</strong>' +
+                '<strong>' + title + '</strong>' +
                 '<button type="button" class="remove"' +
                   ' data-remove="' + index + '"' +
-                  ' aria-label="Remover exercício ' + (index + 1) + '">' +
+                  ' aria-label="Remover ' + title.toLowerCase() + '">' +
                   'Remover' +
                 '</button>' +
               '</div>' +
 
-              '<div class="exercise-grid">' +
-                input('exercicio', 'Exercício', 'Ex.: Supino reto', 100) +
+              (conjugated ? '<div class="sequence-note">' + sequenceNote + '</div>' : '') +
+              '<div class="exercise-grid' + (conjugated ? ' conjugated' : '') + '">' +
+                '<div class="exercise-names">' + names +
+                  '<button type="button" class="conjugate-button" data-add-conjugate="' + index + '">' +
+                    (conjugated ? '+ Adicionar à sequência' : '+ Conjugar exercício') +
+                  '</button>' +
+                '</div>' +
                 input('series', 'Séries', 'Ex.: 3', 30) +
-                input('repeticoes', 'Repetições', 'Ex.: 10 a 12', 40) +
-                input('intervalo', 'Intervalo', 'Ex.: 1 minuto', 35) +
+                input('repeticoes', conjugated ? 'Repetições da sequência' : 'Repetições', 'Ex.: 10 a 12', 40) +
+                input('intervalo', conjugated ? 'Intervalo após a série' : 'Intervalo', 'Ex.: 1 minuto', 35) +
                 input('metodo', 'Método', 'Ex.: Bi-set', 45) +
               '</div>' +
             '</div>'
@@ -832,10 +951,47 @@
       const index = Number(event.target.dataset.index);
       const field = event.target.dataset.field;
 
-      state.treinos[state.ativo][index][field] = event.target.value;
+      const row = state.treinos[state.ativo][index];
+
+      if (field === 'conjugado') {
+        row.conjugados[Number(event.target.dataset.conjugate)] = event.target.value;
+      } else {
+        row[field] = event.target.value;
+      }
     });
 
     $('rows').addEventListener('click', (event) => {
+      const addConjugate = event.target.closest('[data-add-conjugate]');
+
+      if (addConjugate) {
+        const index = Number(addConjugate.dataset.addConjugate);
+        const row = state.treinos[state.ativo][index];
+        row.conjugados.push('');
+        drawRows();
+        $('rows').querySelector(
+          '[data-index="' + index + '"][data-conjugate="' + (row.conjugados.length - 1) + '"]'
+        ).focus();
+        return;
+      }
+
+      const removeConjugate = event.target.closest('[data-remove-conjugate]');
+
+      if (removeConjugate) {
+        const index = Number(removeConjugate.dataset.removeConjugate);
+        const part = Number(removeConjugate.dataset.part);
+        const row = state.treinos[state.ativo][index];
+
+        if (part === 0) {
+          row.exercicio = row.conjugados.shift();
+        } else {
+          row.conjugados.splice(part - 1, 1);
+        }
+
+        drawRows();
+        $('rows').querySelector('[data-index="' + index + '"][data-field="exercicio"]').focus();
+        return;
+      }
+
       const button = event.target.closest('[data-remove]');
       if (!button) return;
 
@@ -906,8 +1062,10 @@
         .slice(0, state.total)
         .map((letter) => {
           const rows = state.treinos[letter].filter((row) => {
-            return Object.values(row).some((value) => value.trim());
-          });
+            return [
+              ...exerciseNames(row), row.series, row.repeticoes, row.intervalo, row.metodo
+            ].some((value) => value.trim());
+          }).map((row) => ({ ...row, conjugados: [...(row.conjugados || [])] }));
 
           if (!rows.length) {
             throw new Error(
@@ -915,10 +1073,10 @@
             );
           }
 
-          if (rows.some((row) => !row.exercicio.trim())) {
+          if (rows.some((row) => exerciseNames(row).some((name) => !name.trim()))) {
             throw new Error(
               'Preencha o nome de todos os exercícios do treino ' +
-              letter + '.'
+              letter + ', incluindo os conjugados.'
             );
           }
 
@@ -963,27 +1121,32 @@
               '<h3>Treino ' + training.letra + '</h3>' +
 
               training.rows.map((row) => {
+                const conjugated = isConjugated(row);
+
                 return (
                   '<div class="summary-row">' +
-                    '<strong>' +
-                      escapeHtml(row.exercicio) +
-                    '</strong>' +
+                    (conjugated
+                      ? '<strong>Conjugado · ' + exerciseNames(row).length + ' exercícios</strong>' +
+                        '<ol class="summary-sequence">' +
+                          exerciseNames(row).map((name) => '<li>' + escapeHtml(name) + '</li>').join('') +
+                        '</ol><div class="sequence-note">' + sequenceNote + '</div>'
+                      : '<strong>' + escapeHtml(row.exercicio) + '</strong>') +
 
                     '<p>' +
                       '<span>Séries: ' +
                         escapeHtml(row.series || '—') +
                       '</span>' +
 
-                      '<span>Repetições: ' +
+                      '<span>' + (conjugated ? 'Repetições da sequência: ' : 'Repetições: ') +
                         escapeHtml(row.repeticoes || '—') +
                       '</span>' +
 
-                      '<span>Intervalo: ' +
+                      '<span>' + (conjugated ? 'Intervalo após a série: ' : 'Intervalo: ') +
                         escapeHtml(row.intervalo || '—') +
                       '</span>' +
 
                       '<span>Método: ' +
-                        escapeHtml(row.metodo || '—') +
+                        escapeHtml(row.metodo || (conjugated ? 'Conjugado' : '—')) +
                       '</span>' +
                     '</p>' +
                   '</div>'
@@ -1308,6 +1471,16 @@
           const lines = values.map((value, index) => {
             return wrap(value, normal, columns[index] - 8);
           });
+
+          if (isConjugated(row)) {
+            lines[0] = ['Conjugado', ...exerciseNames(row).flatMap((name, index) => (
+              wrap((index + 1) + '. ' + name, normal, columns[0] - 8)
+            ))];
+            lines[2].push(...wrap('1 sequência = 1 repetição', normal, columns[2] - 8));
+            lines[3].push(...wrap('Após a série', normal, columns[3] - 8));
+            lines[4] = wrap(row.metodo || 'Conjugado', normal, columns[4] - 8);
+            lines[4].push(...wrap('Sem pausa entre exercícios', normal, columns[4] - 8));
+          }
 
           const rowHeight = Math.max(
             height * 0.029,
