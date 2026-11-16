@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cris Alochio | Treino Personalizado</title>
+
+  <style>
+    :root {
+      --orange: #ff6a00;
+      --orange-dark: #d95400;
+      --black: #151515;
+      --gray: #777;
+      --border: #e7e7e7;
+      --background: #f5f5f3;
+      --white: #fff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--black);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .topbar {
+      background: #111;
+      border-bottom: 4px solid var(--orange);
+      color: white;
+      padding: 24px 20px;
+    }
+
+    .topbar-content {
+      max-width: 1080px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 3px solid var(--orange);
+      color: var(--orange);
+      font-weight: 900;
+      transform: rotate(-45deg);
+    }
+
+    .brand-icon span {
+      transform: rotate(45deg);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+    }
+
+    .brand-name small {
+      display: block;
+      margin-top: 3px;
+      color: #aaa;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .top-label {
+      color: #aaa;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .container {
+      width: min(100% - 32px, 1040px);
+      margin: 36px auto 70px;
+    }
+
+    .intro {
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      color: var(--orange-dark);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 9px;
+      font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -1.5px;
+    }
+
+    .intro p,
+    .description {
+      color: #6e6e6e;
+      line-height: 1.6;
+    }
+
+    .card {
+      padding: 30px;
+      border: 1px solid #eaeaea;
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.045);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    .section-number {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #fff0e7;
+      color: var(--orange-dark);
+      font-weight: 800;
+    }
+
+    .section-heading h2 {
+      margin: 1px 0 5px;
+      font-size: 21px;
+    }
+
+    .section-heading p {
+      margin-bottom: 0;
+      color: var(--gray);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    label {
+      display: block;
+      color: #333;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    label small {
+      color: #999;
+      font-weight: 400;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 8px;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      outline: none;
+      background: #fff;
+      color: #222;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .model-box {
+      margin-top: 25px;
+      padding: 18px;
+      border: 1px dashed #e8c3a8;
+      border-radius: 12px;
+      background: #fffaf6;
+    }
+
+    .model-box p {
+      margin: 7px 0 12px;
+      color: #806d61;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .model-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 19px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .button-primary {
+      background: var(--orange);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: var(--orange-dark);
+    }
+
+    .button-secondary {
+      border-color: #ddd;
+      background: white;
+      color: #333;
+    }
+
+    .button-secondary:hover {
+      background: #f8f8f8;
+    }
+
+    .button-dark {
+      background: #191919;
+      color: white;
+    }
+
+    .days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+
+    .day {
+      min-height: 43px;
+      padding: 10px 15px;
+      border: 1px solid #e3e3e3;
+      border-radius: 9px;
+      background: white;
+      color: #555;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .day.active {
+      border-color: #191919;
+      background: #191919;
+      color: white;
+    }
+
+    .workout-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 16px;
+    }
+
+    .workout-heading h3 {
+      margin: 5px 0 0;
+      font-size: 22px;
+    }
+
+    .workout-heading span {
+      color: var(--orange-dark);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .exercise {
+      margin-bottom: 14px;
+      padding: 18px;
+      border: 1px solid #e9e9e9;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+
+    .exercise-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .exercise-top strong {
+      font-size: 14px;
+    }
+
+    .remove {
+      padding: 6px 0;
+      border: 0;
+      background: none;
+      color: #a34b35;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .exercise-grid input {
+      min-height: 43px;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    .add-button {
+      width: 100%;
+      margin-top: 4px;
+      border: 1px dashed #f2a16b;
+      background: #fff8f3;
+      color: var(--orange-dark);
+    }
+
+    .summary-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .summary-info > div {
+      padding: 16px;
+      border-radius: 10px;
+      background: #f7f7f7;
+    }
+
+    .summary-info span {
+      display: block;
+      margin-bottom: 7px;
+      color: #999;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .summary-info b {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    .summary-day {
+      margin: 16px 0;
+      padding: 18px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+    }
+
+    .summary-day h3 {
+      margin-bottom: 14px;
+      color: var(--orange-dark);
+    }
+
+    .summary-row {
+      padding: 12px 0;
+      border-top: 1px solid #eee;
+    }
+
+    .summary-row strong {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    .summary-row p {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      margin: 8px 0 0;
+      color: #777;
+      font-size: 12px;
+    }
+
+    .pdf-preview {
+      margin-top: 25px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+    }
+
+    .pdf-preview h3 {
+      margin-bottom: 8px;
+    }
+
+    .pdf-status {
+      color: #777;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    iframe {
+      width: 100%;
+      height: 620px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #eee;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: #999;
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        margin-top: 25px;
+      }
+
+      .card {
+        padding: 21px 17px;
+        border-radius: 14px;
+      }
+
+      .top-label {
+        display: none;
+      }
+
+      .form-grid,
+      .summary-info {
+        grid-template-columns: 1fr;
+      }
+
+      .exercise-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .exercise-grid label:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .actions .button {
+        width: 100%;
+      }
+
+      iframe {
+        height: 480px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-content">
+      <div class="brand">
+        <div class="brand-icon"><span>C</span></div>
+        <div class="brand-name">
+          CRIS ALOCHIO
+          <small>PERSONAL TRAINER</small>
+        </div>
+      </div>
+
+      <div class="top-label">
+        Fichas de treino<br>
+        personalizadas
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="intro">
+      <div class="eyebrow">Coaching fitness</div>
+      <h1>Treino personalizado.</h1>
+      <p>Preencha os dados, organize os exercícios e confira a ficha antes de baixar.</p>
+    </div>
+
+    <section id="studentScreen" class="screen">
+      <div class="card">
+        <div class="section-heading">
+          <div class="section-number">01</div>
+          <div>
+            <h2>Dados do aluno</h2>
+            <p>Comece pelas informações que aparecerão na ficha.</p>
+          </div>
+        </div>
+
+        <form id="student">
+          <div class="form-grid">
+            <label class="full">
+              Nome do aluno
+              <input
+                id="nome"
+                type="text"
+                maxlength="80"
+                placeholder="Digite o nome completo"
+                autocomplete="name"
+                required
+              >
+            </label>
+
+            <label>
+              Objetivo
+              <select id="objetivo" required>
+                <option value="">Selecione o objetivo</option>
+                <option value="Hipertrofia">Hipertrofia</option>
+                <option value="Emagrecimento">Emagrecimento</option>
+              </select>
+            </label>
+
+            <label>
+              Data
+              <input id="data" type="date" required>
+            </label>
+
+            <label class="full">
+              Quantos treinos serão montados?
+              <select id="total">
+                <option value="1">1 treino — A</option>
+                <option value="2">2 treinos — A / B</option>
+                <option value="3">3 treinos — A / B / C</option>
+                <option value="4">4 treinos — A / B / C / D</option>
+                <option value="5">5 treinos — A / B / C / D / E</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="model-box" role="note">
+            <strong>Modelo padrão incluído</strong>
+            <p>
+              A ficha usa automaticamente a capa, o cabeçalho e a página final
+              do modelo Cris Alochio. Quando houver espaço, mais de um treino
+              será organizado na mesma folha.
+            </p>
+          </div>
+
+          <div class="actions">
+            <span></span>
+            <button class="button button-primary" type="submit">
+              Montar treinos →
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="workouts" class="screen" hidden>
+      <div class="card">
+        <div class="section-heading">
+          <div class="section-number">02</div>
+          <div>
+            <h2>Montar os treinos</h2>
+            <p>Selecione cada dia e adicione os exercícios correspondentes.</p>
+          </div>
+        </div>
+
+        <div id="days" class="days"></div>
+
+        <div class="workout-heading">
+          <div>
+            <span id="dayIndex"></span>
+            <h3 id="current"></h3>
+          </div>
+        </div>
+
+        <div id="rows"></div>
+
+        <button id="add" class="button add-button" type="button">
+          + Adicionar exercício
+        </button>
+
+        <div class="actions">
+          <button id="backStudent" class="button button-secondary" type="button">
+            ← Voltar aos dados
+          </button>
+
+          <button id="reviewButton" class="button button-primary" type="button">
+            Conferir treino →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="review" class="screen" hidden>
+      <div class="card">
+        <div class="section-heading">
+          <div class="section-number">03</div>
+          <div>
+            <h2>Confira antes de baixar</h2>
+            <p>Revise as informações e volte para editar sempre que precisar.</p>
+          </div>
+        </div>
+
+        <div id="summary"></div>
+
+        <div class="actions">
+          <button id="editStudent" class="button button-secondary" type="button">
+            Editar dados
+          </button>
+
+          <button id="editWorkouts" class="button button-secondary" type="button">
+            Editar treinos
+          </button>
+        </div>
+
+        <div class="pdf-preview">
+          <h3>Prévia do PDF</h3>
+
+          <p id="pdfStatus" class="pdf-status" aria-live="polite"></p>
+
+          <iframe id="pdfFrame" title="Prévia do PDF de treino"></iframe>
+
+          <div class="actions">
+            <a
+              id="openPdf"
+              class="button button-secondary"
+              target="_blank"
+              rel="noopener"
+              hidden
+            >
+              Abrir prévia
+            </a>
+
+            <a id="download" class="button button-primary" hidden>
+              Baixar PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Cris Alochio · Personal Trainer
+    </div>
+  </main>
+
+  <script src="./assets/pdf-lib.min.js"></script>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+
+    const empty = () => ({
+      exercicio: '',
+      series: '',
+      repeticoes: '',
+      intervalo: '',
+      metodo: ''
+    });
+
+    const state = {
+      total: 1,
+      ativo: 'A',
+      treinos: Object.fromEntries(
+        letters.map((letter) => [letter, [empty()]])
+      )
+    };
+
+    let blobUrl = '';
+    let templateBytes = null;
+    let previewVersion = 0;
+
+    const escapeHtml = (value) => String(value ?? '').replace(
+      /[&<>"']/g,
+      (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[character])
+    );
+
+    function today() {
+      const date = new Date();
+      const pad = (number) => String(number).padStart(2, '0');
+
+      return (
+        date.getFullYear() + '-' +
+        pad(date.getMonth() + 1) + '-' +
+        pad(date.getDate())
+      );
+    }
+
+    $('data').value = today();
+
+    function show(id) {
+      document.querySelectorAll('.screen').forEach((screen) => {
+        screen.hidden = screen.id !== id;
+      });
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function drawDays() {
+      $('days').innerHTML = letters
+        .slice(0, state.total)
+        .map((letter) => {
+          const active = state.ativo === letter ? 'active' : '';
+
+          return (
+            '<button type="button" class="day ' + active +
+            '" data-day="' + letter + '">' +
+            'Treino ' + letter +
+            '</button>'
+          );
+        })
+        .join('');
+
+      $('current').textContent = 'Treino ' + state.ativo;
+
+      $('dayIndex').textContent =
+        'DIA ' + (letters.indexOf(state.ativo) + 1) +
+        ' DE ' + state.total;
+
+      drawRows();
+    }
+
+    function drawRows() {
+      $('rows').innerHTML = state.treinos[state.ativo]
+        .map((row, index) => {
+          const input = (field, label, placeholder, max) => {
+            return (
+              '<label>' + label +
+              '<input type="text"' +
+              ' data-index="' + index + '"' +
+              ' data-field="' + field + '"' +
+              ' maxlength="' + max + '"' +
+              ' placeholder="' + placeholder + '"' +
+              ' value="' + escapeHtml(row[field]) + '">' +
+              '</label>'
+            );
+          };
+
+          return (
+            '<div class="exercise">' +
+              '<div class="exercise-top">' +
+                '<strong>Exercício ' + (index + 1) + '</strong>' +
+                '<button type="button" class="remove"' +
+                  ' data-remove="' + index + '"' +
+                  ' aria-label="Remover exercício ' + (index + 1) + '">' +
+                  'Remover' +
+                '</button>' +
+              '</div>' +
+
+              '<div class="exercise-grid">' +
+                input('exercicio', 'Exercício', 'Ex.: Supino reto', 100) +
+                input('series', 'Séries', 'Ex.: 3', 30) +
+                input('repeticoes', 'Repetições', 'Ex.: 10 a 12', 40) +
+                input('intervalo', 'Intervalo', 'Ex.: 1 minuto', 35) +
+                input('metodo', 'Método', 'Ex.: Bi-set', 45) +
+              '</div>' +
+            '</div>'
+          );
+        })
+        .join('');
+    }
+
+    $('days').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-day]');
+      if (!button) return;
+
+      state.ativo = button.dataset.day;
+      drawDays();
+    });
+
+    $('rows').addEventListener('input', (event) => {
+      if (!event.target.dataset.field) return;
+
+      const index = Number(event.target.dataset.index);
+      const field = event.target.dataset.field;
+
+      state.treinos[state.ativo][index][field] = event.target.value;
+    });
+
+    $('rows').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-remove]');
+      if (!button) return;
+
+      const rows = state.treinos[state.ativo];
+
+      rows.splice(Number(button.dataset.remove), 1);
+
+      if (!rows.length) {
+        rows.push(empty());
+      }
+
+      drawRows();
+    });
+
+    $('add').addEventListener('click', () => {
+      state.treinos[state.ativo].push(empty());
+
+      drawRows();
+
+      $('rows').lastElementChild.querySelector('input').focus();
+    });
+
+    $('total').addEventListener('change', (event) => {
+      state.total = Number(event.target.value);
+
+      if (letters.indexOf(state.ativo) >= state.total) {
+        state.ativo = 'A';
+      }
+    });
+
+    $('student').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (!$('student').reportValidity()) return;
+
+      if (!$('nome').value.trim()) {
+        $('nome').focus();
+        return;
+      }
+
+      drawDays();
+      show('workouts');
+    });
+
+    $('backStudent').addEventListener('click', () => {
+      show('studentScreen');
+    });
+
+    $('editStudent').addEventListener('click', () => {
+      show('studentScreen');
+    });
+
+    $('editWorkouts').addEventListener('click', () => {
+      drawDays();
+      show('workouts');
+    });
+
+    function getData() {
+      const nome = $('nome').value.trim();
+      const objetivo = $('objetivo').value;
+      const data = $('data').value;
+
+      if (!nome || !objetivo || !data) {
+        throw new Error('Confira nome, objetivo e data do aluno.');
+      }
+
+      const treinos = letters
+        .slice(0, state.total)
+        .map((letter) => {
+          const rows = state.treinos[letter].filter((row) => {
+            return Object.values(row).some((value) => value.trim());
+          });
+
+          if (!rows.length) {
+            throw new Error(
+              'Adicione pelo menos um exercício no treino ' + letter + '.'
+            );
+          }
+
+          if (rows.some((row) => !row.exercicio.trim())) {
+            throw new Error(
+              'Preencha o nome de todos os exercícios do treino ' +
+              letter + '.'
+            );
+          }
+
+          return {
+            letra: letter,
+            rows
+          };
+        });
+
+      return {
+        nome,
+        objetivo,
+        data,
+        treinos
+      };
+    }
+
+    function dateBr(value) {
+      const parts = value.split('-');
+      return parts[2] + '/' + parts[1] + '/' + parts[0];
+    }
+
+    function summary(data) {
+      $('summary').innerHTML =
+        '<div class="summary-info">' +
+          '<div><span>ALUNO</span><b>' +
+            escapeHtml(data.nome) +
+          '</b></div>' +
+
+          '<div><span>OBJETIVO</span><b>' +
+            escapeHtml(data.objetivo) +
+          '</b></div>' +
+
+          '<div><span>DATA</span><b>' +
+            dateBr(data.data) +
+          '</b></div>' +
+        '</div>' +
+
+        data.treinos.map((training) => {
+          return (
+            '<section class="summary-day">' +
+              '<h3>Treino ' + training.letra + '</h3>' +
+
+              training.rows.map((row) => {
+                return (
+                  '<div class="summary-row">' +
+                    '<strong>' +
+                      escapeHtml(row.exercicio) +
+                    '</strong>' +
+
+                    '<p>' +
+                      '<span>Séries: ' +
+                        escapeHtml(row.series || '—') +
+                      '</span>' +
+
+                      '<span>Repetições: ' +
+                        escapeHtml(row.repeticoes || '—') +
+                      '</span>' +
+
+                      '<span>Intervalo: ' +
+                        escapeHtml(row.intervalo || '—') +
+                      '</span>' +
+
+                      '<span>Método: ' +
+                        escapeHtml(row.metodo || '—') +
+                      '</span>' +
+                    '</p>' +
+                  '</div>'
+                );
+              }).join('') +
+            '</section>'
+          );
+        }).join('');
+    }
+
+    async function getTemplate() {
+      if (templateBytes) {
+        return templateBytes.slice(0);
+      }
+
+      let response;
+
+      try {
+        response = await fetch(new URL('./modelo.pdf', document.baseURI));
+      } catch (error) {
+        throw new Error(
+          'Não foi possível carregar o modelo padrão. Abra o sistema pelo endereço do site e tente novamente.'
+        );
+      }
+
+      if (!response || !response.ok) {
+        throw new Error(
+          'O modelo padrão não está disponível. Confira se modelo.pdf foi publicado junto com o sistema.'
+        );
+      }
+
+      templateBytes = await response.arrayBuffer();
+      return templateBytes.slice(0);
+    }
+
+    function fileName(data) {
+      const name = data.nome
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+      const date = dateBr(data.data).replace(/\//g, '-');
+
+      return (
+        'treino-personalizado-' +
+        (name || 'aluno') +
+        '-' + date +
+        '.pdf'
+      );
+    }
+
+    async function createPDF(data) {
+      if (!window.PDFLib) {
+        throw new Error(
+          'Não foi possível carregar os recursos de PDF. Recarregue a página e tente novamente.'
+        );
+      }
+
+      const bytes = await getTemplate();
+
+      const {
+        PDFDocument,
+        StandardFonts,
+        rgb
+      } = PDFLib;
+
+      const original = await PDFDocument.load(bytes.slice(0));
+
+      if (original.getPageCount() < 3) {
+        throw new Error(
+          'O modelo precisa ter pelo menos três páginas: capa, ficha e encerramento.'
+        );
+      }
+
+      const pdf = await PDFDocument.create();
+
+      const [cover] = await pdf.copyPages(original, [0]);
+      pdf.addPage(cover);
+
+      const normal = await pdf.embedFont(StandardFonts.Helvetica);
+      const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
+
+      const sourcePage = original.getPage(1);
+      const base = sourcePage.getCropBox();
+
+      const width = base.width;
+      const height = base.height;
+
+      // Reutiliza o cabeçalho original sem converter a página em imagem.
+      const headerHeight = height * 0.287;
+      const header = await pdf.embedPage(sourcePage, {
+        left: base.x,
+        bottom: base.y + height - headerHeight,
+        right: base.x + width,
+        top: base.y + height
+      });
+
+      const black = rgb(0, 0, 0);
+      const white = rgb(1, 1, 1);
+      const orange = rgb(1, 0.4, 0);
+      const tableOrange = rgb(237 / 255, 125 / 255, 49 / 255);
+      const gray = rgb(0.6, 0.6, 0.6);
+
+      const left = width * 0.05;
+      const tableWidth = width * 0.90;
+      const fontSize = Math.max(9, width * 0.017);
+      const lineHeight = fontSize * 1.25;
+
+      function wrap(value, font, maxWidth) {
+        const text = String(value || '-')
+          .replace(/\s+/g, ' ')
+          .trim() || '-';
+
+        try {
+          font.encodeText(text);
+        } catch (error) {
+          throw new Error(
+            'Há caracteres não suportados no PDF. Remova símbolos especiais de: ' +
+            text
+          );
+        }
+
+        const output = [];
+        let line = '';
+
+        for (const word of text.split(' ')) {
+          const proposal = line ? line + ' ' + word : word;
+
+          if (font.widthOfTextAtSize(proposal, fontSize) <= maxWidth) {
+            line = proposal;
+            continue;
+          }
+
+          if (line) {
+            output.push(line);
+            line = '';
+          }
+
+          for (const character of word) {
+            if (
+              line &&
+              font.widthOfTextAtSize(line + character, fontSize) > maxWidth
+            ) {
+              output.push(line);
+              line = '';
+            }
+
+            line += character;
+          }
+        }
+
+        if (line) {
+          output.push(line);
+        }
+
+        return output.length ? output : ['-'];
+      }
+
+      function box(page, x, top, boxWidth, boxHeight, fill, border = gray) {
+        page.drawRectangle({
+          x,
+          y: top - boxHeight,
+          width: boxWidth,
+          height: boxHeight,
+          color: fill,
+          borderColor: border,
+          borderWidth: 0.5
+        });
+      }
+
+      function textLines(page, lines, x, top, color = black, font = normal) {
+        lines.forEach((line, index) => {
+          page.drawText(line, {
+            x: x + 4,
+            y: top - 4 - fontSize - index * lineHeight,
+            size: fontSize,
+            font,
+            color
+          });
+        });
+      }
+
+      const columns = [0.235, 0.195, 0.235, 0.165, 0.17]
+        .map((percentage) => percentage * tableWidth);
+
+      const tableGap = height * 0.025;
+      const bottomMargin = height * 0.055;
+      const titleHeight = height * 0.038;
+      const columnHeaderHeight = height * 0.031;
+      const tableHeaderHeight = titleHeight + columnHeaderHeight;
+      const information = [
+        ['Nome:', data.nome],
+        ['Objetivo:', data.objetivo],
+        ['Data:', dateBr(data.data)]
+      ].map(([label, value]) => {
+        const lines = wrap(value, normal, tableWidth / 2 - 8);
+
+        return {
+          label,
+          lines,
+          height: Math.max(height * 0.026, lines.length * lineHeight + 8)
+        };
+      });
+
+      const firstTableTop = height - headerHeight - 1 - tableGap -
+        information.reduce((sum, item) => sum + item.height, 0);
+      const pageBodyHeight = firstTableTop - bottomMargin;
+
+      let page;
+      let y;
+      let hasTables = false;
+
+      function newPage() {
+        page = pdf.addPage([width, height]);
+
+        page.drawPage(header, {
+          x: 0,
+          y: height - headerHeight,
+          width,
+          height: headerHeight
+        });
+
+        y = height - headerHeight - 1;
+        hasTables = false;
+
+        for (const { label, lines, height: rowHeight } of information) {
+          box(page, left, y, tableWidth / 2, rowHeight, black, black);
+
+          box(
+            page,
+            left + tableWidth / 2,
+            y,
+            tableWidth / 2,
+            rowHeight,
+            white
+          );
+
+          textLines(page, [label], left, y, orange, bold);
+
+          textLines(
+            page,
+            lines,
+            left + tableWidth / 2,
+            y
+          );
+
+          y -= rowHeight;
+        }
+
+        y -= tableGap;
+      }
+
+      function drawTableHeader(letter, continuation = false) {
+        box(page, left, y, tableWidth, titleHeight, black, black);
+
+        const title =
+          'Treino ' + letter +
+          (continuation ? ' (continuação)' : '');
+
+        page.drawText(title, {
+          x: left + (
+            tableWidth - bold.widthOfTextAtSize(title, fontSize)
+          ) / 2,
+          y: y - titleHeight / 2 - fontSize / 3,
+          size: fontSize,
+          font: bold,
+          color: orange
+        });
+
+        y -= titleHeight;
+
+        let x = left;
+
+        [
+          'Exercícios',
+          'Séries',
+          'Repetições',
+          'Intervalo',
+          'Método'
+        ].forEach((title, index) => {
+          box(
+            page,
+            x,
+            y,
+            columns[index],
+            columnHeaderHeight,
+            tableOrange,
+            gray
+          );
+
+          const size = fontSize * 0.92;
+
+          page.drawText(title, {
+            x: x + (
+              columns[index] - bold.widthOfTextAtSize(title, size)
+            ) / 2,
+            y: y - columnHeaderHeight / 2 - size / 3,
+            size,
+            font: bold,
+            color: black
+          });
+
+          x += columns[index];
+        });
+
+        y -= columnHeaderHeight;
+        hasTables = true;
+      }
+
+      for (const training of data.treinos) {
+        const rows = training.rows.map((row) => {
+          const values = [
+            row.exercicio,
+            row.series,
+            row.repeticoes,
+            row.intervalo,
+            row.metodo
+          ];
+
+          const lines = values.map((value, index) => {
+            return wrap(value, normal, columns[index] - 8);
+          });
+
+          const rowHeight = Math.max(
+            height * 0.029,
+            Math.max(...lines.map((item) => item.length)) * lineHeight + 8
+          );
+
+          if (rowHeight + tableHeaderHeight > pageBodyHeight) {
+            throw new Error(
+              'Reduza o texto do exercício "' + row.exercicio +
+              '" para que ele caiba na ficha.'
+            );
+          }
+
+          return { lines, height: rowHeight };
+        });
+
+        const tableHeight = tableHeaderHeight +
+          rows.reduce((sum, row) => sum + row.height, 0);
+
+        if (!page) newPage();
+
+        const nextTop = y - (hasTables ? tableGap : 0);
+        const remainingHeight = nextTop - bottomMargin;
+        const minimumHeight = tableHeaderHeight + rows[0].height;
+
+        // Mantém a tabela inteira quando ela cabe em uma folha vazia.
+        // Tabelas maiores continuam na próxima folha, repetindo os títulos.
+        if (
+          tableHeight > remainingHeight + 0.01 &&
+          (tableHeight <= pageBodyHeight + 0.01 || minimumHeight > remainingHeight + 0.01)
+        ) {
+          newPage();
+        } else {
+          y = nextTop;
+        }
+
+        drawTableHeader(training.letra);
+
+        for (const { lines, height: rowHeight } of rows) {
+          if (y - rowHeight < bottomMargin - 0.01) {
+            newPage();
+            drawTableHeader(training.letra, true);
+          }
+
+          let x = left;
+
+          lines.forEach((item, index) => {
+            box(page, x, y, columns[index], rowHeight, white);
+            textLines(page, item, x, y);
+            x += columns[index];
+          });
+
+          y -= rowHeight;
+        }
+      }
+
+      const [last] = await pdf.copyPages(
+        original,
+        [original.getPageCount() - 1]
+      );
+
+      pdf.addPage(last);
+
+      return pdf.save();
+    }
+
+    $('reviewButton').addEventListener('click', async () => {
+      let data;
+
+      try {
+        data = getData();
+      } catch (error) {
+        alert(error.message);
+        return;
+      }
+
+      summary(data);
+      show('review');
+
+      const version = ++previewVersion;
+
+      $('pdfStatus').textContent = 'Preparando a prévia do PDF...';
+      $('download').hidden = true;
+      $('openPdf').hidden = true;
+
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+        blobUrl = '';
+      }
+
+      $('pdfFrame').removeAttribute('src');
+
+      try {
+        const bytes = await createPDF(data);
+
+        if (version !== previewVersion) return;
+
+        blobUrl = URL.createObjectURL(
+          new Blob([bytes], {
+            type: 'application/pdf'
+          })
+        );
+
+        $('pdfFrame').src = blobUrl;
+
+        $('download').href = blobUrl;
+        $('download').download = fileName(data);
+        $('download').hidden = false;
+
+        $('openPdf').href = blobUrl;
+        $('openPdf').hidden = false;
+
+        $('pdfStatus').textContent =
+          'Confira os dados e a prévia. Para alterar, volte à edição.';
+      } catch (error) {
+        if (version !== previewVersion) return;
+
+        $('pdfStatus').textContent =
+          error.message || 'Não foi possível gerar o PDF.';
+      }
+    });
+  </script>
+</body>
+</html>
